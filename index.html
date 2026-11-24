@@ -13,118 +13,328 @@
 
   <style>
     :root {
-      --bg-primary: #0f172a;
-      --bg-secondary: #1e293b;
-      --bg-card: rgba(30, 41, 59, 0.85);
+      --bg-primary: #070b19;
+      --bg-secondary: #111936;
+      --bg-card: rgba(17, 25, 54, 0.72);
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
       --accent-cyan: #06b6d4;
+      --accent-purple: #8b5cf6;
       --accent-gold: #f59e0b;
       --accent-green: #10b981;
       --accent-rose: #f43f5e;
-      --border-color: rgba(255, 255, 255, 0.1);
+      --border-color: rgba(255, 255, 255, 0.12);
+      --glow-cyan: rgba(6, 182, 212, 0.45);
+      --glow-purple: rgba(139, 92, 246, 0.4);
     }
 
     [data-theme="light"] {
       --bg-primary: #f0fdf4;
       --bg-secondary: #ffffff;
-      --bg-card: rgba(255, 255, 255, 0.9);
+      --bg-card: rgba(255, 255, 255, 0.85);
       --text-main: #0f172a;
       --text-muted: #475569;
       --accent-cyan: #0284c7;
+      --accent-purple: #7c3aed;
       --accent-gold: #d97706;
       --accent-green: #059669;
       --accent-rose: #e11d48;
       --border-color: rgba(0, 0, 0, 0.08);
+      --glow-cyan: rgba(2, 132, 199, 0.25);
+      --glow-purple: rgba(124, 58, 237, 0.2);
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Tajawal', sans-serif;
+    }
 
     body {
       background-color: var(--bg-primary);
       color: var(--text-main);
       min-height: 100vh;
-      padding: 20px 10px;
+      padding: 25px 15px;
+      position: relative;
+      overflow-x: hidden;
+      transition: background-color 0.4s ease, color 0.4s ease;
     }
 
-    .container { max-width: 1200px; margin: 0 auto; }
+    /* ================= خلفية الأشكال المتحركة والإضاءات ================= */
+    .bg-animation {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.55;
+      animation: floatOrb 18s infinite alternate ease-in-out;
+    }
+
+    .orb-1 {
+      width: 380px;
+      height: 380px;
+      background: radial-gradient(circle, var(--accent-cyan), transparent 70%);
+      top: -100px;
+      right: -80px;
+      animation-duration: 16s;
+    }
+
+    .orb-2 {
+      width: 450px;
+      height: 450px;
+      background: radial-gradient(circle, var(--accent-purple), transparent 70%);
+      bottom: -120px;
+      left: -100px;
+      animation-duration: 22s;
+      animation-delay: -5s;
+    }
+
+    .orb-3 {
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, var(--accent-gold), transparent 70%);
+      top: 40%;
+      left: 45%;
+      opacity: 0.3;
+      animation-duration: 25s;
+      animation-delay: -10s;
+    }
+
+    /* أشكال هندسية عائمة */
+    .floating-shapes span {
+      position: absolute;
+      display: block;
+      width: 20px;
+      height: 20px;
+      background: rgba(6, 182, 212, 0.15);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      animation: floatUp 20s linear infinite;
+      bottom: -150px;
+      border-radius: 6px;
+    }
+
+    .floating-shapes span:nth-child(1) { left: 10%; width: 35px; height: 35px; animation-delay: 0s; animation-duration: 18s; }
+    .floating-shapes span:nth-child(2) { left: 25%; width: 18px; height: 18px; animation-delay: 3s; animation-duration: 14s; border-radius: 50%; border-color: var(--accent-gold); }
+    .floating-shapes span:nth-child(3) { left: 45%; width: 45px; height: 45px; animation-delay: 6s; animation-duration: 24s; }
+    .floating-shapes span:nth-child(4) { left: 65%; width: 22px; height: 22px; animation-delay: 2s; animation-duration: 16s; border-radius: 50%; }
+    .floating-shapes span:nth-child(5) { left: 82%; width: 30px; height: 30px; animation-delay: 5s; animation-duration: 20s; border-color: var(--accent-purple); }
+    .floating-shapes span:nth-child(6) { left: 92%; width: 15px; height: 15px; animation-delay: 8s; animation-duration: 15s; border-radius: 50%; }
+
+    @keyframes floatOrb {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(40px, 60px) scale(1.15); }
+      100% { transform: translate(-40px, -30px) scale(0.95); }
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+      20% { opacity: 0.7; }
+      80% { opacity: 0.5; }
+      100% { transform: translateY(-120vh) rotate(720deg); opacity: 0; }
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 20px var(--glow-cyan), inset 0 0 15px rgba(6, 182, 212, 0.1); }
+      50% { box-shadow: 0 0 35px var(--glow-purple), inset 0 0 25px rgba(139, 92, 246, 0.15); }
+    }
+
+    @keyframes shimmer {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+
+    /* ================= الحاوية الرئيسية والترويسة ================= */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
 
     header {
       background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 20px;
-      padding: 30px 20px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(6, 182, 212, 0.35);
+      border-radius: 24px;
+      padding: 38px 20px;
       margin-bottom: 30px;
       text-align: center;
       position: relative;
+      animation: pulseGlow 6s infinite ease-in-out;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 200%;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--accent-cyan), var(--accent-gold), var(--accent-purple), transparent);
+      animation: shimmer 4s linear infinite;
     }
 
     .header-top-controls {
       position: absolute;
-      top: 15px;
-      left: 15px;
+      top: 18px;
+      left: 18px;
       display: flex;
       gap: 10px;
+      z-index: 2;
     }
 
     .btn-icon {
       background: var(--bg-secondary);
       border: 1px solid var(--border-color);
       color: var(--text-main);
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.1rem;
+      font-size: 1.15rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-icon:hover {
+      transform: translateY(-3px) scale(1.05);
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 15px var(--glow-cyan);
+      color: var(--accent-cyan);
     }
 
     .school-title {
-      font-size: 2.2rem;
+      font-size: 2.3rem;
       font-weight: 900;
-      color: #ffffff;
-      margin-bottom: 10px;
-      text-shadow: 0 0 15px rgba(6, 182, 212, 0.8);
+      background: linear-gradient(90deg, #ffffff, #38bdf8, #fbbf24, #ffffff);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 5s linear infinite;
+      margin-bottom: 12px;
+      filter: drop-shadow(0 2px 10px rgba(6, 182, 212, 0.4));
+    }
+
+    [data-theme="light"] .school-title {
+      background: linear-gradient(90deg, #0f172a, #0284c7, #d97706, #0f172a);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     .event-title {
-      font-size: 1.1rem;
+      font-size: 1.15rem;
       color: var(--accent-gold);
-      font-weight: 700;
+      font-weight: 800;
       display: inline-block;
       background: rgba(245, 158, 11, 0.15);
-      padding: 6px 18px;
+      padding: 8px 22px;
       border-radius: 50px;
-      border: 1px solid rgba(245, 158, 11, 0.3);
+      border: 1px solid rgba(245, 158, 11, 0.45);
+      box-shadow: 0 0 18px rgba(245, 158, 11, 0.25);
     }
 
+    /* ================= شريط المشرف ================= */
     .admin-bar {
       display: none;
-      background: rgba(239, 68, 68, 0.2);
-      border: 1px solid #ef4444;
-      padding: 12px 20px;
-      border-radius: 12px;
-      margin-bottom: 25px;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(245, 158, 11, 0.5);
+      box-shadow: 0 0 25px rgba(245, 158, 11, 0.2);
+      padding: 15px 22px;
+      border-radius: 16px;
+      margin-bottom: 28px;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
     }
 
-    .admin-bar.active { display: flex; }
+    [data-theme="light"] .admin-bar {
+      background: rgba(255, 255, 255, 0.95);
+    }
 
-    .btn-danger {
-      background: #ef4444;
+    .admin-bar.active {
+      display: flex;
+      animation: fadeInDown 0.4s ease;
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .admin-controls-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-toggle-form {
+      background: linear-gradient(135deg, #06b6d4, #2563eb);
       color: white;
       border: none;
-      padding: 8px 16px;
-      border-radius: 8px;
+      padding: 9px 18px;
+      border-radius: 10px;
       cursor: pointer;
       font-weight: bold;
+      font-size: 0.92rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 15px rgba(6, 182, 212, 0.35);
+      transition: all 0.3s ease;
+    }
+
+    .btn-toggle-form.is-hidden-state {
+      background: linear-gradient(135deg, #10b981, #059669);
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.35);
+    }
+
+    .btn-toggle-form:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.1);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #ef4444, #be123c);
+      color: white;
+      border: none;
+      padding: 9px 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 0.92rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 15px rgba(239, 68, 68, 0.35);
+      transition: all 0.3s ease;
+    }
+
+    .btn-danger:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.1);
     }
 
     .section-title {
-      font-size: 1.4rem;
+      font-size: 1.45rem;
       font-weight: 800;
       margin-bottom: 20px;
       display: flex;
@@ -132,146 +342,235 @@
       gap: 10px;
     }
 
+    /* ================= منصة التتويج ================= */
     .podium-section {
       display: none;
       margin-bottom: 40px;
     }
 
-    body.is-admin .podium-section { display: block; }
+    body.is-admin .podium-section {
+      display: block;
+    }
 
     .podium-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 20px;
+      gap: 22px;
     }
 
     .podium-card {
       background: var(--bg-card);
+      backdrop-filter: blur(12px);
       border: 2px solid var(--border-color);
-      border-radius: 18px;
-      padding: 20px;
+      border-radius: 20px;
+      padding: 25px 20px;
       position: relative;
       text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
-    .podium-card.rank-1 { border-color: #f59e0b; box-shadow: 0 0 20px rgba(245, 158, 11, 0.2); }
-    .podium-card.rank-2 { border-color: #94a3b8; box-shadow: 0 0 20px rgba(148, 163, 184, 0.2); }
-    .podium-card.rank-3 { border-color: #b45309; box-shadow: 0 0 20px rgba(180, 83, 9, 0.2); }
+    .podium-card:hover {
+      transform: translateY(-6px);
+    }
+
+    .podium-card.rank-1 { border-color: #f59e0b; box-shadow: 0 0 28px rgba(245, 158, 11, 0.3); }
+    .podium-card.rank-2 { border-color: #94a3b8; box-shadow: 0 0 25px rgba(148, 163, 184, 0.25); }
+    .podium-card.rank-3 { border-color: #b45309; box-shadow: 0 0 25px rgba(180, 83, 9, 0.25); }
 
     .badge-rank {
       position: absolute;
       top: 12px;
       right: 12px;
-      padding: 4px 12px;
+      padding: 5px 14px;
       border-radius: 20px;
       font-weight: bold;
       font-size: 0.85rem;
       color: white;
     }
 
-    .rank-1 .badge-rank { background: #f59e0b; }
-    .rank-2 .badge-rank { background: #94a3b8; }
-    .rank-3 .badge-rank { background: #b45309; }
+    .rank-1 .badge-rank { background: linear-gradient(135deg, #f59e0b, #d97706); }
+    .rank-2 .badge-rank { background: linear-gradient(135deg, #94a3b8, #64748b); }
+    .rank-3 .badge-rank { background: linear-gradient(135deg, #b45309, #92400e); }
 
+    /* ================= نموذج إضافة النشاط ================= */
     .form-card {
       background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 20px;
-      padding: 25px;
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+      border-radius: 22px;
+      padding: 28px;
       margin-bottom: 40px;
+      transition: all 0.4s ease;
+    }
+
+    .closed-notice {
+      display: none;
+      background: var(--bg-card);
+      backdrop-filter: blur(12px);
+      border: 1px dashed rgba(245, 158, 11, 0.5);
+      border-radius: 18px;
+      padding: 22px;
+      margin-bottom: 35px;
+      text-align: center;
+      color: var(--accent-gold);
+      font-weight: 700;
+      font-size: 1.05rem;
     }
 
     .form-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 15px;
+      gap: 16px;
       margin-top: 15px;
     }
 
     .form-group {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 7px;
     }
 
     .form-group.full-width { grid-column: 1 / -1; }
 
-    label { font-weight: 700; font-size: 0.9rem; }
+    label { font-weight: 700; font-size: 0.92rem; color: var(--accent-cyan); }
 
     input, textarea {
       background: var(--bg-secondary);
       border: 1px solid var(--border-color);
       color: var(--text-main);
-      padding: 10px 14px;
-      border-radius: 10px;
+      padding: 12px 15px;
+      border-radius: 12px;
       outline: none;
       font-size: 0.95rem;
+      transition: all 0.3s ease;
+    }
+
+    input:focus, textarea:focus {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 15px var(--glow-cyan);
     }
 
     .btn-submit {
-      background: linear-gradient(135deg, var(--accent-cyan), #3b82f6);
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
       color: white;
       border: none;
-      padding: 12px 24px;
-      border-radius: 10px;
-      font-weight: bold;
-      font-size: 1rem;
+      padding: 14px 24px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 1.05rem;
       cursor: pointer;
-      margin-top: 15px;
+      margin-top: 18px;
       width: 100%;
+      box-shadow: 0 5px 20px var(--glow-cyan);
+      transition: all 0.3s ease;
     }
 
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px var(--glow-purple);
+      filter: brightness(1.08);
+    }
+
+    /* ================= بطاقات الأنشطة ================= */
     .activities-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 24px;
     }
 
     .activity-card {
       background: var(--bg-card);
+      backdrop-filter: blur(14px);
       border: 1px solid var(--border-color);
-      border-radius: 16px;
+      border-radius: 20px;
       overflow: hidden;
       position: relative;
       display: flex;
       flex-direction: column;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .activity-card:hover {
+      transform: translateY(-8px) scale(1.01);
+      border-color: var(--accent-cyan);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35), 0 0 22px var(--glow-cyan);
+    }
+
+    .activity-img-wrapper {
+      position: relative;
+      overflow: hidden;
+      height: 190px;
     }
 
     .activity-img {
       width: 100%;
-      height: 180px;
+      height: 100%;
       object-fit: cover;
       background: #000;
+      transition: transform 0.5s ease;
+    }
+
+    .activity-card:hover .activity-img {
+      transform: scale(1.08);
     }
 
     .activity-body {
-      padding: 15px;
+      padding: 18px;
       display: flex;
       flex-direction: column;
       flex-grow: 1;
     }
 
-    .teacher-name { color: var(--accent-cyan); font-weight: 800; font-size: 1rem; }
-    .activity-topic { font-size: 1.1rem; font-weight: 700; margin: 5px 0; }
-    .activity-info { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 5px; }
+    .teacher-name {
+      color: var(--accent-cyan);
+      font-weight: 800;
+      font-size: 1.05rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .activity-topic {
+      font-size: 1.15rem;
+      font-weight: 800;
+      margin: 6px 0 8px;
+    }
+
+    .activity-info {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      line-height: 1.5;
+    }
 
     .video-link-btn {
-      display: inline-block;
-      margin: 8px 0;
-      background: rgba(6, 182, 212, 0.15);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin: 10px 0;
+      background: rgba(6, 182, 212, 0.12);
       border: 1px solid var(--accent-cyan);
       color: var(--accent-cyan);
-      padding: 6px 12px;
-      border-radius: 8px;
-      font-size: 0.85rem;
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 0.88rem;
       font-weight: bold;
       text-decoration: none;
-      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .video-link-btn:hover {
+      background: var(--accent-cyan);
+      color: #fff;
+      box-shadow: 0 0 15px var(--glow-cyan);
     }
 
     .voting-section {
       margin-top: auto;
-      padding-top: 12px;
+      padding-top: 14px;
       border-top: 1px solid var(--border-color);
       display: flex;
       flex-direction: column;
@@ -280,59 +579,106 @@
 
     .vote-buttons {
       display: flex;
-      gap: 5px;
+      gap: 6px;
       justify-content: space-between;
     }
 
     .btn-vote {
       flex: 1;
-      padding: 6px 4px;
-      border-radius: 8px;
+      padding: 8px 4px;
+      border-radius: 10px;
       border: 1px solid var(--border-color);
       background: var(--bg-secondary);
       color: var(--text-main);
       cursor: pointer;
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       font-weight: bold;
       text-align: center;
+      transition: all 0.25s ease;
     }
 
-    .btn-vote.voted-1 { background: #f59e0b; color: white; border-color: #f59e0b; }
-    .btn-vote.voted-2 { background: #94a3b8; color: white; border-color: #94a3b8; }
-    .btn-vote.voted-3 { background: #b45309; color: white; border-color: #b45309; }
+    .btn-vote:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent-cyan);
+    }
+
+    .btn-vote.voted-1 { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; border-color: #f59e0b; box-shadow: 0 0 12px rgba(245, 158, 11, 0.5); }
+    .btn-vote.voted-2 { background: linear-gradient(135deg, #94a3b8, #64748b); color: white; border-color: #94a3b8; box-shadow: 0 0 12px rgba(148, 163, 184, 0.5); }
+    .btn-vote.voted-3 { background: linear-gradient(135deg, #b45309, #92400e); color: white; border-color: #b45309; box-shadow: 0 0 12px rgba(180, 83, 9, 0.5); }
 
     .vote-count { display: none; }
     body.is-admin .vote-count { display: inline; }
 
     .admin-actions {
       position: absolute;
-      top: 10px;
-      left: 10px;
+      top: 12px;
+      left: 12px;
       display: none;
+      z-index: 5;
     }
 
     body.is-admin .admin-actions { display: block; }
+
+    .votes-badge-pill {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: var(--accent-green);
+      padding: 6px 16px;
+      border-radius: 50px;
+      font-weight: 800;
+      font-size: 0.92rem;
+      box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
+    }
   </style>
 </head>
 <body>
+  <!-- خلفية الأشكال والإضاءات المتحركة -->
+  <div class="bg-animation">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="floating-shapes">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+
   <div class="container">
     <header>
       <div class="header-top-controls">
-        <button class="btn-icon" id="themeToggle" title="تبديل الوضع"><i class="fa-solid fa-moon"></i></button>
+        <button class="btn-icon" id="themeToggle" title="تبديل الوضع النهاري/الليلي"><i class="fa-solid fa-moon"></i></button>
         <button class="btn-icon" id="adminToggle" title="دخول المشرف"><i class="fa-solid fa-user-shield"></i></button>
       </div>
       <h1 class="school-title">ابتدائية المنار القرآنية إناث</h1>
       <div class="event-title">🏆 مسابقة أفضل نشاط تربوي - شهر أكتوبر 2026م</div>
     </header>
 
+    <!-- شريط تحكم المشرف -->
     <div class="admin-bar" id="adminBar">
-      <span>⚙️ <strong>وضع المشرف مفعل:</strong> النتائج سحابية وحية.</span>
-      <button class="btn-danger" id="btnClearAll">مسح الكل</button>
+      <span>⚙️ <strong>وضع المشرف مفعل:</strong> التحكم الكامل في المنصة والنتائج.</span>
+      <div class="admin-controls-group">
+        <button class="btn-toggle-form" id="btnToggleFormVisibility">
+          <i class="fa-solid fa-eye-slash"></i> إخفاء تنزيل النشاط للزوار
+        </button>
+        <button class="btn-danger" id="btnClearAll">
+          <i class="fa-solid fa-trash-can"></i> مسح الكل
+        </button>
+      </div>
     </div>
 
     <main>
-      <section class="form-card">
-        <h2 class="section-title"><i class="fa-solid fa-plus-circle"></i> إضافة نشاط جديد للمشاركة</h2>
+      <!-- رسالة تظهر للزوار عندما يقوم المشرف بإخفاء نموذج تنزيل النشاط -->
+      <div class="closed-notice" id="closedNotice">
+        <i class="fa-solid fa-lock"></i> باب إضافة وتنزيل الأنشطة مغلق حالياً من طرف المشرف، يمكنكم التصويت للأنشطة المشاركة أدناه.
+      </div>
+
+      <!-- قسم إضافة/تنزيل النشاط -->
+      <section class="form-card" id="activityFormSection">
+        <h2 class="section-title"><i class="fa-solid fa-plus-circle" style="color:var(--accent-cyan);"></i> إضافة نشاط جديد للمشاركة</h2>
         <div class="form-grid">
           <div class="form-group">
             <label>اسم الأستاذ(ة)</label>
@@ -359,18 +705,22 @@
             <input type="file" id="imageInput" accept="image/*">
           </div>
         </div>
-        <button type="button" class="btn-submit" onclick="publishActivity()">نشر النشاط</button>
+        <button type="button" class="btn-submit" onclick="publishActivity()">
+          <i class="fa-solid fa-cloud-arrow-up"></i> نشر وتنزيل النشاط
+        </button>
       </section>
 
+      <!-- منصة التتويج الخاصة بالمشرف -->
       <section class="podium-section">
         <h2 class="section-title"><i class="fa-solid fa-trophy" style="color:#f59e0b;"></i> نتائج المنصة السحابية (خاص بالمشرف)</h2>
         <div class="podium-grid" id="podiumGrid"></div>
       </section>
 
+      <!-- قائمة الأنشطة المشاركة -->
       <section>
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-          <h2 class="section-title"><i class="fa-solid fa-list-check"></i> الأنشطة المشاركة (صوت لـ 3 أنشطة كحد أقصى)</h2>
-          <span id="votesLeftBadge" style="color:var(--accent-green); font-weight:bold;">الأصوات المتبقية لك: 3</span>
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:20px;">
+          <h2 class="section-title" style="margin-bottom:0;"><i class="fa-solid fa-list-check" style="color:var(--accent-purple);"></i> الأنشطة المشاركة (صوت لـ 3 أنشطة كحد أقصى)</h2>
+          <span id="votesLeftBadge" class="votes-badge-pill">الأصوات المتبقية لك: 3</span>
         </div>
         <div class="activities-grid" id="activitiesGrid"></div>
       </section>
@@ -378,7 +728,7 @@
   </div>
 
   <script>
-    // إعدادات قاعدة البيانات السحابية المربوطة بمشروعك
+    // إعدادات قاعدة البيانات السحابية
     const firebaseConfig = {
       databaseURL: "https://manar-activity-default-rtdb.europe-west1.firebasedatabase.app/"
     };
@@ -388,9 +738,51 @@
     let activities = [];
     let userVotes = JSON.parse(localStorage.getItem('almanar_user_votes')) || {};
     let isAdmin = false;
+    let allowSubmissions = true; // الحالة الافتراضية لإظهار تنزيل النشاط
     const MAX_VOTES = 3;
     const ADMIN_PASS = "1593";
 
+    // الاستماع لحالة إظهار/إخفاء تنزيل النشاط من قاعدة البيانات السحابية
+    db.ref('settings/allowSubmissions').on('value', (snapshot) => {
+      const val = snapshot.val();
+      allowSubmissions = (val === null) ? true : val;
+      updateFormVisibility();
+    });
+
+    // دالة تحديث ظهور نموذج تنزيل النشاط وزر المشرف
+    function updateFormVisibility() {
+      const formSection = document.getElementById('activityFormSection');
+      const closedNotice = document.getElementById('closedNotice');
+      const toggleBtn = document.getElementById('btnToggleFormVisibility');
+
+      if (allowSubmissions) {
+        formSection.style.display = 'block';
+        closedNotice.style.display = 'none';
+        toggleBtn.innerHTML = '<i class="fa-solid fa-eye-slash"></i> إخفاء تنزيل النشاط للزوار';
+        toggleBtn.classList.remove('is-hidden-state');
+      } else {
+        // إذا كان المشرف مسجلاً للدخول يبقى النموذج ظاهراً له مع تنبيه، ويختفي تماماً للزوار
+        if (isAdmin) {
+          formSection.style.display = 'block';
+          closedNotice.style.display = 'block';
+          closedNotice.innerHTML = '<i class="fa-solid fa-eye-slash"></i> تنبيه للمشرف: نموذج تنزيل النشاط مخفي حالياً عن الزوار (ظاهر لك فقط بصفتك مشرفاً).';
+        } else {
+          formSection.style.display = 'none';
+          closedNotice.style.display = 'block';
+          closedNotice.innerHTML = '<i class="fa-solid fa-lock"></i> باب إضافة وتنزيل الأنشطة مغلق حالياً من طرف المشرف، يمكنكم التصويت للأنشطة المشاركة أدناه.';
+        }
+        toggleBtn.innerHTML = '<i class="fa-solid fa-eye"></i> إظهار تنزيل النشاط للزوار';
+        toggleBtn.classList.add('is-hidden-state');
+      }
+    }
+
+    // زر المشرف لتبديل الإظهار والإخفاء في السحابة
+    document.getElementById('btnToggleFormVisibility').addEventListener('click', () => {
+      if (!isAdmin) return;
+      db.ref('settings/allowSubmissions').set(!allowSubmissions);
+    });
+
+    // جلب الأنشطة من قاعدة البيانات
     db.ref('activities').on('value', (snapshot) => {
       const data = snapshot.val();
       activities = [];
@@ -402,36 +794,51 @@
       render();
     });
 
+    // تبديل الوضع الليلي والنهاري
     document.getElementById('themeToggle').addEventListener('click', () => {
       const isLight = document.body.getAttribute('data-theme') === 'light';
       document.body.setAttribute('data-theme', isLight ? 'dark' : 'light');
+      const icon = document.querySelector('#themeToggle i');
+      icon.className = isLight ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
     });
 
+    // دخول وخروج المشرف
     document.getElementById('adminToggle').addEventListener('click', () => {
       if (!isAdmin) {
         if (prompt("أدخل الرقم السري للمشرف:") === ADMIN_PASS) {
           isAdmin = true;
           document.body.classList.add('is-admin');
           document.getElementById('adminBar').classList.add('active');
+          updateFormVisibility();
           render();
-        } else { alert("الرقم السري خاطئ!"); }
+        } else {
+          alert("الرقم السري خاطئ!");
+        }
       } else {
         isAdmin = false;
         document.body.classList.remove('is-admin');
         document.getElementById('adminBar').classList.remove('active');
+        updateFormVisibility();
         render();
       }
     });
 
+    // مسح جميع الأنشطة
     document.getElementById('btnClearAll').addEventListener('click', () => {
-      if(isAdmin && confirm('مسح جميع الأنشطة من السحابة؟')) {
+      if (isAdmin && confirm('هل أنت متأكد من مسح جميع الأنشطة من السحابة؟')) {
         db.ref('activities').remove();
         userVotes = {};
         localStorage.removeItem('almanar_user_votes');
       }
     });
 
+    // نشر نشاط جديد
     function publishActivity() {
+      if (!allowSubmissions && !isAdmin) {
+        alert('عذراً، تم إيقاف إضافة الأنشطة حالياً من طرف المشرف.');
+        return;
+      }
+
       const name = document.getElementById('teacherName').value.trim();
       const topic = document.getElementById('activityTopic').value.trim();
       const target = document.getElementById('targetAudience').value.trim();
@@ -471,7 +878,7 @@
               alert('فشل النشر: تأكد من اتصال الإنترنت أو قواعد أمان قاعدة البيانات.');
             }
           });
-        } catch(e) {
+        } catch (e) {
           alert('حدث خطأ غير متوقع أثناء الاتصال.');
         }
       };
@@ -486,6 +893,7 @@
       }
     }
 
+    // التصويت للأنشطة
     function voteActivity(id, rank) {
       const currentVoteForThis = userVotes[id];
       const act = activities.find(a => a.id === id);
@@ -515,12 +923,14 @@
       db.ref(`activities/${id}/votes`).set(votesObj);
     }
 
+    // حذف نشاط فردي
     function deleteAct(id) {
-      if(isAdmin && confirm('حذف هذا النشاط؟')) {
+      if (isAdmin && confirm('هل تريد حذف هذا النشاط؟')) {
         db.ref(`activities/${id}`).remove();
       }
     }
 
+    // عرض الأنشطة والنتائج
     function render() {
       const usedVotes = Object.keys(userVotes).length;
       document.getElementById('votesLeftBadge').innerText = `الأصوات المتبقية لك: ${MAX_VOTES - usedVotes}`;
@@ -534,11 +944,13 @@
         grid.innerHTML += `
           <div class="activity-card">
             <div class="admin-actions">
-              <button class="btn-danger" onclick="deleteAct('${act.id}')">حذف</button>
+              <button class="btn-danger" onclick="deleteAct('${act.id}')"><i class="fa-solid fa-trash"></i> حذف</button>
             </div>
-            <img src="${act.image}" class="activity-img">
+            <div class="activity-img-wrapper">
+              <img src="${act.image}" class="activity-img" alt="صورة النشاط">
+            </div>
             <div class="activity-body">
-              <div class="teacher-name">${act.teacherName}</div>
+              <div class="teacher-name"><i class="fa-solid fa-chalkboard-user"></i> ${act.teacherName}</div>
               <div class="activity-topic">${act.topic}</div>
               <div class="activity-info"><strong>الفئة:</strong> ${act.target}</div>
               <div class="activity-info"><strong>الهدف:</strong> ${act.goal}</div>
@@ -589,8 +1001,8 @@
           <div class="podium-card rank-${rankNum}">
             <div class="badge-rank">${titles[idx]}</div>
             ${act ? `
-              <h3 style="margin-top:20px; color:var(--accent-cyan);">${act.teacherName}</h3>
-              <p style="font-weight:bold; margin:5px 0;">${act.topic}</p>
+              <h3 style="margin-top:22px; color:var(--accent-cyan);">${act.teacherName}</h3>
+              <p style="font-weight:bold; margin:6px 0;">${act.topic}</p>
               <div style="color:var(--accent-gold); font-weight:bold;">⭐ الأصوات: ${votesObj[rankNum] || 0}</div>
             ` : `
               <h3 style="margin-top:25px; color:var(--text-muted);">لا توجد أصوات بعد</h3>
@@ -600,6 +1012,7 @@
       });
     }
 
+    updateFormVisibility();
     render();
   </script>
 </body>
